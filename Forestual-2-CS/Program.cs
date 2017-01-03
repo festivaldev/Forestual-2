@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Forestual2CS.Dialogues;
 
-namespace Forestual_2_CS
+namespace Forestual2CS
 {
     static class Program
     {
@@ -13,9 +11,10 @@ namespace Forestual_2_CS
         /// </summary>
         [STAThread]
         static void Main() {
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainWindow());
+            Application.Run(new LoginDialogue());
         }
     }
 }
