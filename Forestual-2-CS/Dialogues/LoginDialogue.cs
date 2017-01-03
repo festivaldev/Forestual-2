@@ -28,6 +28,7 @@ namespace Forestual2CS.Dialogues
 
         public LoginDialogue() {
             InitializeComponent();
+
             btnLogin.Click += OnBtnLoginClick;
             Closing += OnClosing;
             Shown += OnShown;
@@ -35,12 +36,16 @@ namespace Forestual2CS.Dialogues
             this.Text += $" - Version {new Version().ToMediumString()}";
 
             if (File.Exists(Path.Combine(Application.StartupPath, "connections"))) {
-                var Connections = File.ReadAllLines(Path.Combine(Application.StartupPath, "connections"));
-                var Dialog = new ChooseConnectionDialogue();
-                if (Dialog.ShowDialog(Connections) == DialogResult.OK) {
-                    tbxAddress.Text = Connections[Dialog.SelectedIndex].Split(':')[0];
-                    tbxPort.Text = Connections[Dialog.SelectedIndex].Split(':')[1];
-                    AutoConnect = true;
+                var Connections = File.ReadAllLines(Path.Combine(Application.StartupPath, "connections")).ToList();
+                if (Connections.Count > 0) {
+                    var Dialog = new ReconnectDialogue();
+                    if (Dialog.ShowDialog(Connections) == DialogResult.OK) {
+                        tbxAddress.Text = Connections[Dialog.SelectedIndex].Split(':')[0];
+                        tbxPort.Text = Connections[Dialog.SelectedIndex].Split(':')[1];
+                        AutoConnect = true;
+                        Connections.RemoveAll(c => Dialog.RemovedIndexes.Contains(Connections.IndexOf(c)));
+                        File.WriteAllLines(Path.Combine(Application.StartupPath, "connections"), Connections);
+                    }
                 }
             }
         }

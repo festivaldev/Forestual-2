@@ -100,11 +100,11 @@
     <Compile Include="ChannelControl.Designer.cs">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\ChooseConnectionDialogue.cs">
+    <Compile Include="Dialogues\ReconnectDialogue.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\ChooseConnectionDialogue.Designer.cs">
-      <DependentUpon>ChooseConnectionDialogue.cs</DependentUpon>
+    <Compile Include="Dialogues\ReconnectDialogue.Designer.cs">
+      <DependentUpon>ReconnectDialogue.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogues\LoginDialogue.cs">
       <SubType>Form</SubType>
@@ -138,8 +138,8 @@
     <EmbeddedResource Include="ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\ChooseConnectionDialogue.resx">
-      <DependentUpon>ChooseConnectionDialogue.cs</DependentUpon>
+    <EmbeddedResource Include="Dialogues\ReconnectDialogue.resx">
+      <DependentUpon>ReconnectDialogue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\LoginDialogue.resx">
       <DependentUpon>LoginDialogue.cs</DependentUpon>
