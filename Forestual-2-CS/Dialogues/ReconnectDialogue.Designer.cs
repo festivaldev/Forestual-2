@@ -35,7 +35,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(269, 240);
+            this.btnCancel.Location = new System.Drawing.Point(265, 241);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(90, 25);
             this.btnCancel.TabIndex = 0;
@@ -45,7 +45,7 @@
             // btnConnect
             // 
             this.btnConnect.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnConnect.Location = new System.Drawing.Point(173, 240);
+            this.btnConnect.Location = new System.Drawing.Point(169, 241);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(90, 25);
             this.btnConnect.TabIndex = 1;
@@ -75,7 +75,7 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(12, 240);
+            this.btnRemove.Location = new System.Drawing.Point(12, 241);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(90, 25);
             this.btnRemove.TabIndex = 6;
@@ -89,7 +89,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(371, 273);
+            this.ClientSize = new System.Drawing.Size(367, 276);
             this.ControlBox = false;
             this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.lbxServers);
