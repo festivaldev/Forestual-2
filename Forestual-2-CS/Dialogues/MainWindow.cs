@@ -160,6 +160,7 @@ namespace Forestual2CS.Dialogues
                     }
                     break;
                 case Enumerations.Action.ExtensionTransport:
+                    GC.Collect();
                     var Bytes = JsonConvert.DeserializeObject<byte[]>(Contents[1]);
                     if (!Directory.Exists(Path.Combine(Application.StartupPath, "Extensions")))
                         Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Extensions"));
@@ -193,6 +194,15 @@ namespace Forestual2CS.Dialogues
                     break;
                 case Enumerations.Action.SetChannel:
                     // Set Channel
+                    break;
+                case Enumerations.Action.SetAccountData:
+                    GC.Collect();
+                    var Window = new ProfileWindow();
+                    var AvatarPath = Path.Combine(Application.StartupPath, "Storage\\avatar.png");
+                    File.WriteAllBytes(AvatarPath, JsonConvert.DeserializeObject<byte[]>(Contents[1]));
+                    var HeaderPath = Path.Combine(Application.StartupPath, "Storage\\header.png");
+                    File.WriteAllBytes(HeaderPath, JsonConvert.DeserializeObject<byte[]>(Contents[2]));
+                    Window.ShowDialog(Image.FromFile(AvatarPath), Image.FromFile(HeaderPath), bool.Parse(Contents[3]), Contents[4], bool.Parse(Contents[5]), Contents[6], Contents[7], Contents[8]);
                     break;
                 case Enumerations.Action.Disconnect:
                     MessageBox.Show($"The connection was closed by the server.\n\n{Contents[1]}", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -238,39 +248,58 @@ namespace Forestual2CS.Dialogues
         }
 
         private Panel GetItemPanel(string accountName, Color background, bool online) {
-            var Panel = new Panel();
-            Panel.Width = pnlAccounts.Width - 17;
-            Panel.Height = 50;
-            Panel.BackColor = Color.Gainsboro;
-            var Label = new Label();
-            Label.ForeColor = Color.White;
-            Label.Padding = new Padding(3);
-            Label.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-            Label.Text = accountName;
-            Label.AutoSize = true;
-            Label.BackColor = background;
-            Label.Location = new Point(15, 15);
+            var Panel = new Panel {
+                Width = pnlAccounts.Width - 17,
+                Height = 50,
+                BackColor = Color.Gainsboro,
+                Name = $"pnlListEntry:{accountName}",
+                Cursor = Cursors.Hand
+            };
+            Panel.Click += OnAccountListEntryClicked;
+            var Label = new Label {
+                ForeColor = Color.White,
+                Padding = new Padding(3),
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular),
+                Text = accountName,
+                AutoSize = true,
+                BackColor = background,
+                Location = new Point(15, 15),
+                Name = $"lblListEntry:{accountName}",
+                Cursor = Cursors.Hand
+            };
+            Label.Click += OnAccountListEntryClicked;
             Panel.Controls.Add(Label);
-            var Status = new DoubleBufferedPanel();
-            Status.Size = new Size(20, 20);
-            Status.Location = new Point(Panel.Width - 35, 15);
-            Status.State = online ? AccountState.Online : AccountState.Offline;
+            var Status = new DoubleBufferedPanel {
+                Size = new Size(20, 20),
+                Location = new Point(Panel.Width - 35, 15),
+                State = online ? AccountState.Online : AccountState.Offline
+            };
             Status.Paint += StatusElementPaint;
             Panel.Controls.Add(Status);
             if (online) {
-                var Label2 = new Label();
-                Label2.ForeColor = Color.DimGray;
-                Label2.Padding = new Padding(3);
-                Label2.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-                Label2.Text = "in Forestual"; //$"in {Accounts.Find(a => a.Name == accountName).Channel.Name}";
-                Label2.AutoSize = true;
-                Label2.BackColor = Color.White;
-                Label2.Location = new Point(Label.Width + 21, 15);
+                var Label2 = new Label {
+                    ForeColor = Color.DimGray,
+                    Padding = new Padding(3),
+                    Font = new Font("Segoe UI", 9F, FontStyle.Regular),
+                    Text = "in Forestual",
+                    //$"in {Accounts.Find(a => a.Name == accountName).Channel.Name}";
+                    AutoSize = true,
+                    BackColor = Color.White,
+                    Location = new Point(Label.Width + 21, 15),
+                    Name = $"lblListStatusEntry:{accountName}",
+                    Cursor = Cursors.Hand
+                };
+                Label2.Click += OnAccountListEntryClicked;
                 Panel.Controls.Add(Label2);
             } else {
                 Status.State = AccountState.Offline;
             }
             return Panel;
+        }
+
+        private void OnAccountListEntryClicked(object sender, EventArgs e) {
+            var AccountName = ((Control) sender).Name.Split(':')[1];
+            SendToServer(string.Join("|", Enumerations.Action.GetAccountData, AccountName));
         }
 
         private void StatusElementPaint(object sender, PaintEventArgs e) {

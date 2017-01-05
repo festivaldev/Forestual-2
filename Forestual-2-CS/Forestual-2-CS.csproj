@@ -100,6 +100,12 @@
     <Compile Include="ChannelControl.Designer.cs">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogues\ProfileWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\ProfileWindow.Designer.cs">
+      <DependentUpon>ProfileWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\ReconnectDialogue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +143,9 @@
     <Compile Include="Version.cs" />
     <EmbeddedResource Include="ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\ProfileWindow.resx">
+      <DependentUpon>ProfileWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\ReconnectDialogue.resx">
       <DependentUpon>ReconnectDialogue.cs</DependentUpon>
