@@ -33,11 +33,11 @@
             this.tbxInput = new System.Windows.Forms.TextBox();
             this.pnlAccounts = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnManagement = new System.Windows.Forms.Button();
+            this.btnChannels = new System.Windows.Forms.Button();
+            this.btnAccounts = new System.Windows.Forms.Button();
             this.cbxSidebar = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -96,7 +96,7 @@
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(100, 27);
             this.btnSend.TabIndex = 4;
-            this.btnSend.Text = "Senden";
+            this.btnSend.Text = "Send";
             this.btnSend.UseVisualStyleBackColor = true;
             // 
             // tbxInput
@@ -123,10 +123,10 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.button4);
-            this.panel3.Controls.Add(this.button3);
-            this.panel3.Controls.Add(this.button2);
-            this.panel3.Controls.Add(this.button1);
+            this.panel3.Controls.Add(this.btnSettings);
+            this.panel3.Controls.Add(this.btnManagement);
+            this.panel3.Controls.Add(this.btnChannels);
+            this.panel3.Controls.Add(this.btnAccounts);
             this.panel3.Controls.Add(this.cbxSidebar);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
@@ -134,6 +134,46 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(884, 40);
             this.panel3.TabIndex = 1;
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.Location = new System.Drawing.Point(326, 8);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(100, 25);
+            this.btnSettings.TabIndex = 2;
+            this.btnSettings.Text = "Settings";
+            this.btnSettings.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            // 
+            // btnManagement
+            // 
+            this.btnManagement.Location = new System.Drawing.Point(220, 8);
+            this.btnManagement.Name = "btnManagement";
+            this.btnManagement.Size = new System.Drawing.Size(100, 25);
+            this.btnManagement.TabIndex = 3;
+            this.btnManagement.Text = "Management";
+            this.btnManagement.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnManagement.UseVisualStyleBackColor = true;
+            // 
+            // btnChannels
+            // 
+            this.btnChannels.Location = new System.Drawing.Point(114, 8);
+            this.btnChannels.Name = "btnChannels";
+            this.btnChannels.Size = new System.Drawing.Size(100, 25);
+            this.btnChannels.TabIndex = 2;
+            this.btnChannels.Text = "Channels";
+            this.btnChannels.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnChannels.UseVisualStyleBackColor = true;
+            // 
+            // btnAccounts
+            // 
+            this.btnAccounts.Location = new System.Drawing.Point(8, 8);
+            this.btnAccounts.Name = "btnAccounts";
+            this.btnAccounts.Size = new System.Drawing.Size(100, 25);
+            this.btnAccounts.TabIndex = 1;
+            this.btnAccounts.Text = "Accounts";
+            this.btnAccounts.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnAccounts.UseVisualStyleBackColor = true;
             // 
             // cbxSidebar
             // 
@@ -148,46 +188,6 @@
             this.cbxSidebar.Text = "Sidebar";
             this.cbxSidebar.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.cbxSidebar.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(8, 8);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 25);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Accounts";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(114, 8);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 25);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Channels";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(220, 8);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 25);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Management";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(326, 8);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(100, 25);
-            this.button4.TabIndex = 2;
-            this.button4.Text = "Settings";
-            this.button4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button4.UseVisualStyleBackColor = true;
             // 
             // MainWindow
             // 
@@ -222,9 +222,9 @@
         private System.Windows.Forms.TextBox tbxInput;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.CheckBox cbxSidebar;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnSettings;
+        private System.Windows.Forms.Button btnManagement;
+        private System.Windows.Forms.Button btnChannels;
+        private System.Windows.Forms.Button btnAccounts;
     }
 }

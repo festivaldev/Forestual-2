@@ -28,7 +28,7 @@ namespace Forestual2CS.Dialogues
 
         public ProfileWindow() {
             InitializeComponent();
-            panel1.Paint += OnPanel1Paint;
+            pnlHeader.Paint += OnPanelHeaderPaint;
             this.Closing += OnClosing;
         }
 
@@ -52,7 +52,7 @@ namespace Forestual2CS.Dialogues
             return base.ShowDialog();
         }
 
-        private void OnPanel1Paint(object sender, PaintEventArgs e) {
+        private void OnPanelHeaderPaint(object sender, PaintEventArgs e) {
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             e.Graphics.CompositingQuality = CompositingQuality.HighQuality;
             e.Graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
@@ -75,6 +75,7 @@ namespace Forestual2CS.Dialogues
             var TextRectangle = new Rectangle(120, 0, 530, 120);
             e.Graphics.DrawString(AccountName, new Font("Segoe UI Semibold", 34F), new SolidBrush(Color.WhiteSmoke), TextRectangle, new StringFormat { LineAlignment = StringAlignment.Center });
             e.Graphics.FillEllipse(new SolidBrush(ColorTranslator.FromHtml(Online ? "#19E68C" : "#FC3539")), new Rectangle(615, 52, 15, 15));
+            GC.Collect();
         }
 
         public Image Circlelize(Image source) {
@@ -84,6 +85,8 @@ namespace Forestual2CS.Dialogues
             GraphicsPath.AddEllipse(0, 0, Target.Width, Target.Height);
             G.SetClip(GraphicsPath);
             G.DrawImage(source, 0, 0);
+            GraphicsPath.Dispose();
+            G.Dispose();
             return Target;
         }
 

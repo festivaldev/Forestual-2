@@ -100,6 +100,24 @@
     <Compile Include="ChannelControl.Designer.cs">
       <DependentUpon>ChannelControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ChannelListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ChannelListItem.Designer.cs">
+      <DependentUpon>ChannelListItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\ChannelOverviewWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\ChannelOverviewWindow.Designer.cs">
+      <DependentUpon>ChannelOverviewWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\ConversationWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\ConversationWindow.Designer.cs">
+      <DependentUpon>ConversationWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\ProfileWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +161,15 @@
     <Compile Include="Version.cs" />
     <EmbeddedResource Include="ChannelControl.resx">
       <DependentUpon>ChannelControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChannelListItem.resx">
+      <DependentUpon>ChannelListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\ChannelOverviewWindow.resx">
+      <DependentUpon>ChannelOverviewWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\ConversationWindow.resx">
+      <DependentUpon>ConversationWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\ProfileWindow.resx">
       <DependentUpon>ProfileWindow.cs</DependentUpon>
