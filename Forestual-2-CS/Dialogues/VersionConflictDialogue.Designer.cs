@@ -58,9 +58,7 @@
             this.rtbDetails.ReadOnly = true;
             this.rtbDetails.Size = new System.Drawing.Size(447, 146);
             this.rtbDetails.TabIndex = 5;
-            this.rtbDetails.Text = "The server you\'re connecting to is running on a version that does not support you" +
-    "r client. To be able to connect to this server please update your client to at l" +
-    "east version:\nF2 4.2.2rc [42r2lsc].";
+            this.rtbDetails.Text = "Details";
             // 
             // Label7
             // 
@@ -79,9 +77,9 @@
             this.lblClientVersion.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblClientVersion.Location = new System.Drawing.Point(0, 29);
             this.lblClientVersion.Name = "lblClientVersion";
-            this.lblClientVersion.Size = new System.Drawing.Size(148, 19);
+            this.lblClientVersion.Size = new System.Drawing.Size(89, 19);
             this.lblClientVersion.TabIndex = 1;
-            this.lblClientVersion.Text = "F2 4.2.1beta [42b1eta]";
+            this.lblClientVersion.Text = "ClientVersion";
             // 
             // lblSupportedClientVersion
             // 
@@ -90,9 +88,9 @@
             this.lblSupportedClientVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(53)))), ((int)(((byte)(57)))));
             this.lblSupportedClientVersion.Location = new System.Drawing.Point(0, 123);
             this.lblSupportedClientVersion.Name = "lblSupportedClientVersion";
-            this.lblSupportedClientVersion.Size = new System.Drawing.Size(125, 19);
+            this.lblSupportedClientVersion.Size = new System.Drawing.Size(185, 19);
             this.lblSupportedClientVersion.TabIndex = 6;
-            this.lblSupportedClientVersion.Text = "F2 4.2.2rc [42r2lsc]";
+            this.lblSupportedClientVersion.Text = "LeastSupportedClientVersion";
             // 
             // Label13
             // 
@@ -111,9 +109,9 @@
             this.lblServerCoreVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(80)))), ((int)(((byte)(255)))));
             this.lblServerCoreVersion.Location = new System.Drawing.Point(0, 76);
             this.lblServerCoreVersion.Name = "lblServerCoreVersion";
-            this.lblServerCoreVersion.Size = new System.Drawing.Size(134, 19);
+            this.lblServerCoreVersion.Size = new System.Drawing.Size(121, 19);
             this.lblServerCoreVersion.TabIndex = 4;
-            this.lblServerCoreVersion.Text = "F2C 4.3.0rc [43r0lsc]";
+            this.lblServerCoreVersion.Text = "ServerCoreVersion";
             // 
             // Label9
             // 
@@ -132,9 +130,9 @@
             this.lblServerVersion.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblServerVersion.Location = new System.Drawing.Point(0, 29);
             this.lblServerVersion.Name = "lblServerVersion";
-            this.lblServerVersion.Size = new System.Drawing.Size(122, 19);
+            this.lblServerVersion.Size = new System.Drawing.Size(87, 19);
             this.lblServerVersion.TabIndex = 2;
-            this.lblServerVersion.Text = "F2S 4.3.0 [43r0lse]";
+            this.lblServerVersion.Text = "SeverVersion";
             // 
             // Label11
             // 
@@ -153,9 +151,9 @@
             this.lblClientCoreVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(62)))), ((int)(((byte)(80)))), ((int)(((byte)(255)))));
             this.lblClientCoreVersion.Location = new System.Drawing.Point(0, 76);
             this.lblClientCoreVersion.Name = "lblClientCoreVersion";
-            this.lblClientCoreVersion.Size = new System.Drawing.Size(124, 19);
+            this.lblClientCoreVersion.Size = new System.Drawing.Size(118, 19);
             this.lblClientCoreVersion.TabIndex = 3;
-            this.lblClientCoreVersion.Text = "F2C 4.2.0 [42r0lse]";
+            this.lblClientCoreVersion.Text = "ClientCoreVersion";
             // 
             // Label3
             // 
@@ -189,9 +187,9 @@
             this.lblSupportedServerVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(53)))), ((int)(((byte)(57)))));
             this.lblSupportedServerVersion.Location = new System.Drawing.Point(0, 123);
             this.lblSupportedServerVersion.Name = "lblSupportedServerVersion";
-            this.lblSupportedServerVersion.Size = new System.Drawing.Size(160, 19);
+            this.lblSupportedServerVersion.Size = new System.Drawing.Size(188, 19);
             this.lblSupportedServerVersion.TabIndex = 5;
-            this.lblSupportedServerVersion.Text = "F2S 4.1.5alpha [41a5lph]";
+            this.lblSupportedServerVersion.Text = "LeastSupportedServerVersion";
             // 
             // Label2
             // 

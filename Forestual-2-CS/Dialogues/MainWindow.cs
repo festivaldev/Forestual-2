@@ -60,6 +60,13 @@ namespace Forestual2CS.Dialogues
             Channel.Dock = DockStyle.Fill;
             pnlConversation.Controls.Add(Channel);
             cbxSidebar.CheckedChanged += (sender, args) => pnlAccounts.Width = (cbxSidebar.Checked ? 300 : 0);
+            btnChannels.Click += OnBtnChannelsClicked;
+        }
+
+        private void OnBtnChannelsClicked(object sender, EventArgs e) {
+            var Window = new ChannelOverviewWindow();
+            Window.Show();
+            Window.SetChannels(Channels);
         }
 
         private void OnBtnSendClick(object sender, EventArgs e) {
@@ -186,6 +193,7 @@ namespace Forestual2CS.Dialogues
                     break;
                 case Enumerations.Action.SetChannelList:
                     Channels = JsonConvert.DeserializeObject<List<Channel>>(Contents[1]);
+
                     // Refresh Channels
                     break;
                 case Enumerations.Action.SetFlags:

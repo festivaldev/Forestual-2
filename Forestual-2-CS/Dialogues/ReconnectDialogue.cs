@@ -58,6 +58,7 @@ namespace Forestual2CS.Dialogues
             foreach (var Connection in connections) {
                 lbxServers.Items.Add(Connection);
             }
+            lbxServers.SelectedIndex = 0;
             return base.ShowDialog();
         }
     }

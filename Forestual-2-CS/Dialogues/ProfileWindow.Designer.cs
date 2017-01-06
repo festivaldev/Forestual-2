@@ -25,7 +25,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.pnlHeader = new System.Windows.Forms.Panel();
             this.btnRecords = new System.Windows.Forms.Button();
             this.btnStartConversation = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
@@ -39,14 +39,14 @@
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // pnlHeader
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(650, 122);
-            this.panel1.TabIndex = 0;
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(34)))), ((int)(((byte)(34)))));
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(650, 122);
+            this.pnlHeader.TabIndex = 0;
             // 
             // btnRecords
             // 
@@ -105,9 +105,9 @@
             this.lblRank.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblRank.Location = new System.Drawing.Point(12, 203);
             this.lblRank.Name = "lblRank";
-            this.lblRank.Size = new System.Drawing.Size(100, 20);
+            this.lblRank.Size = new System.Drawing.Size(41, 20);
             this.lblRank.TabIndex = 6;
-            this.lblRank.Text = "Administrator";
+            this.lblRank.Text = "Rank";
             // 
             // panel2
             // 
@@ -128,9 +128,9 @@
             this.lblMoney.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblMoney.Location = new System.Drawing.Point(160, 203);
             this.lblMoney.Name = "lblMoney";
-            this.lblMoney.Size = new System.Drawing.Size(162, 20);
+            this.lblMoney.Size = new System.Drawing.Size(54, 20);
             this.lblMoney.TabIndex = 15;
-            this.lblMoney.Text = "42 indische Bergziegen";
+            this.lblMoney.Text = "Money";
             // 
             // label4
             // 
@@ -150,9 +150,9 @@
             this.lblLastSeen.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblLastSeen.Location = new System.Drawing.Point(448, 203);
             this.lblLastSeen.Name = "lblLastSeen";
-            this.lblLastSeen.Size = new System.Drawing.Size(122, 20);
+            this.lblLastSeen.Size = new System.Drawing.Size(54, 20);
             this.lblLastSeen.TabIndex = 17;
-            this.lblLastSeen.Text = "January 5th, 2017";
+            this.lblLastSeen.Text = "Offline";
             // 
             // label6
             // 
@@ -178,7 +178,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.lblRank);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -194,7 +194,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Button btnRecords;
         private System.Windows.Forms.Button btnStartConversation;
         private System.Windows.Forms.Button btnEdit;

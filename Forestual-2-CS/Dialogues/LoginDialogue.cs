@@ -84,10 +84,11 @@ namespace Forestual2CS.Dialogues
                             FClient.Dispose();
                         } catch { }
 
+
                         if (MetaData.AcceptsGuests) {
                             // Implement   
                         }
-                        if (!MetaData.RequiresAuthentification && !MetaData.AcceptsRegistration) {
+                        if (!MetaData.AcceptsRegistration) {
                             // Implement
                         }
 
@@ -106,6 +107,11 @@ namespace Forestual2CS.Dialogues
                             Dialog.ShowDialog();
                             tbxAddress.Clear();
                             tbxPort.Clear();
+                            return;
+                        }
+
+                        if (MetaData.IsLockdown) {
+                            MessageBox.Show("Forestual 2 has successfully established a connection to the server. However, the server is on Lockdown and does not accept any new connection at the moment.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
 
