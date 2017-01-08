@@ -15,7 +15,7 @@ namespace Forestual2CS.Dialogues
 {
     public partial class LoginDialogue : Form
     {
-        private ServerMetaData MetaData;
+        public ServerMetaData MetaData { get; set; }
 
         private readonly RSACryptoServiceProvider ServiceProvider = new RSACryptoServiceProvider();
         private readonly RSACryptoServiceProvider PreServiceProvider = new RSACryptoServiceProvider();
@@ -35,8 +35,21 @@ namespace Forestual2CS.Dialogues
 
             this.Text += $" - Version {new Version().ToMediumString()}";
 
-            if (File.Exists(Path.Combine(Application.StartupPath, "connections"))) {
-                var Connections = File.ReadAllLines(Path.Combine(Application.StartupPath, "connections")).ToList();
+            var SessionsPath = Path.Combine(Application.StartupPath, "Sessions");
+            if (Directory.Exists(SessionsPath)) {
+                var SessionFolders = Directory.GetDirectories(SessionsPath);
+                if (SessionFolders.Length > 0) {
+                    for (var i = 0; i < SessionFolders.Length; i++) {
+                        var FolderPath = SessionFolders[i];
+                        if (File.Exists(FolderPath + "\\.siivota")) {
+                            Directory.Delete(FolderPath, true);
+                        }
+                    }
+                }
+            }
+
+            if (File.Exists(Application.StartupPath + "\\.connections")) {
+                var Connections = File.ReadAllLines(Application.StartupPath + "\\.connections").ToList();
                 if (Connections.Count > 0) {
                     var Dialog = new ReconnectDialogue();
                     if (Dialog.ShowDialog(Connections) == DialogResult.OK) {
@@ -44,14 +57,14 @@ namespace Forestual2CS.Dialogues
                         tbxPort.Text = Connections[Dialog.SelectedIndex].Split(':')[1];
                         AutoConnect = true;
                         Connections.RemoveAll(c => Dialog.RemovedIndexes.Contains(Connections.IndexOf(c)));
-                        File.WriteAllLines(Path.Combine(Application.StartupPath, "connections"), Connections);
+                        File.WriteAllLines(Application.StartupPath + "\\.connections", Connections);
                     }
                 }
             }
         }
 
         private void OnShown(object sender, EventArgs e) {
-            if(AutoConnect)
+            if (AutoConnect)
                 btnLogin.PerformClick();
         }
 
@@ -70,7 +83,7 @@ namespace Forestual2CS.Dialogues
                         try {
                             FClient.Connect(tbxAddress.Text, Port);
                         } catch {
-                            MessageBox.Show("Forestual 2 couldn't connect to the server. Make sure the entered address and port is correct and the server is up and running.","Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Forestual 2 couldn't connect to the server. Make sure the entered address and port is correct and the server is up and running.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
                         ServiceProvider.FromXmlString(PublicKey);
@@ -135,13 +148,13 @@ namespace Forestual2CS.Dialogues
 
 
                         var Connections = new List<string>();
-                        if (File.Exists(Path.Combine(Application.StartupPath, "connections"))) {
-                            Connections = File.ReadAllLines(Path.Combine(Application.StartupPath, "connections")).ToList();
+                        if (File.Exists(Application.StartupPath + "\\.connections")) {
+                            Connections = File.ReadAllLines(Application.StartupPath + "\\.connections").ToList();
                         }
                         if (!Connections.Contains($"{tbxAddress.Text}:{tbxPort.Text}")) {
                             Connections.Add($"{tbxAddress.Text}:{tbxPort.Text}");
                         }
-                        File.WriteAllLines(Path.Combine(Application.StartupPath, "connections"), Connections);
+                        File.WriteAllLines(Application.StartupPath + "\\.connections", Connections);
 
 
                         Hide();
