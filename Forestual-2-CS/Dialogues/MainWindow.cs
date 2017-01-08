@@ -9,10 +9,8 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using F2Core;
 using F2Core.Management;
-using Forestual2CS;
 using Forestual2CS.Management;
 using Newtonsoft.Json;
 using ContentAlignment = System.Drawing.ContentAlignment;
@@ -37,6 +35,7 @@ namespace Forestual2CS.Dialogues
         public static List<Enumerations.Flag> Flags;
 
         private int ExtensionCount;
+        private string SessionPath;
 
         private ChannelControl Channel;
         private string ActiveChannelControlId = "forestual";
@@ -90,6 +89,7 @@ namespace Forestual2CS.Dialogues
                 FConnection.Dispose();
                 FClient.Dispose();
             } catch { }
+            File.WriteAllText(SessionPath + "\\.siivota", "");
             Application.Exit();
         }
 
@@ -111,8 +111,8 @@ namespace Forestual2CS.Dialogues
 
                 // Add Handlers
 
-                Directory.EnumerateFiles(Path.Combine(Application.StartupPath, "Extensions")).ToList().ForEach(File.Delete);
-                ClientManagement.RegisterClient(this);
+                //Directory.EnumerateFiles(Path.Combine(Application.StartupPath, "Extensions")).ToList().ForEach(File.Delete);
+                ExtensionPool.RegisterClient(this);
 
             } catch {
                 var Result = MessageBox.Show("Forestual 2 couldn't connect to the server. Make sure the entered address and port is correct and the server is up and running and that your account isn't connected already.", "Forestual 2", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
@@ -157,6 +157,11 @@ namespace Forestual2CS.Dialogues
                     break;
                 case Enumerations.Action.LoginResult:
                     if (Contents[1] == "hej") {
+                        FConnection.SessionId = Contents[2];
+                        Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Sessions", $"{FConnection.SessionId}.session"));
+                        SessionPath = Path.Combine(Application.StartupPath, "Sessions", $"{FConnection.SessionId}.session");
+
+                        File.WriteAllText(SessionPath + "\\meta.json", JsonConvert.SerializeObject(Application.OpenForms.OfType<LoginDialogue>().ToList()[0].MetaData, Formatting.Indented));
 
                     } else if (Contents[1] == "authentificationFailed") {
                         MessageBox.Show("Authentification failed. The given password isn't correct.\nMake sure you entered the correct password and try again.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -169,10 +174,10 @@ namespace Forestual2CS.Dialogues
                 case Enumerations.Action.ExtensionTransport:
                     GC.Collect();
                     var Bytes = JsonConvert.DeserializeObject<byte[]>(Contents[1]);
-                    if (!Directory.Exists(Path.Combine(Application.StartupPath, "Extensions")))
-                        Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Extensions"));
-                    File.WriteAllBytes(Path.Combine(Application.StartupPath, $"Extensions\\extension{ExtensionCount}.dll"), Bytes);
-                    ExtensionManager.LoadExtension(Path.Combine(Application.StartupPath, $"Extensions\\extension{ExtensionCount}.dll"));
+                    if (!Directory.Exists(Path.Combine(SessionPath, "Extensions")))
+                        Directory.CreateDirectory(Path.Combine(SessionPath, "Extensions"));
+                    File.WriteAllBytes(Path.Combine(SessionPath, $"Extensions\\Extension{ExtensionCount}.dll"), Bytes);
+                    ExtensionManager.LoadExtension(Path.Combine(SessionPath, $"Extensions\\Extension{ExtensionCount}.dll"));
                     ExtensionCount++;
                     break;
                 case Enumerations.Action.Extension:
@@ -206,14 +211,17 @@ namespace Forestual2CS.Dialogues
                 case Enumerations.Action.SetAccountData:
                     GC.Collect();
                     var Window = new ProfileWindow();
-                    var AvatarPath = Path.Combine(Application.StartupPath, "Storage\\avatar.png");
+                    if (!Directory.Exists(Path.Combine(SessionPath, "Storage")))
+                        Directory.CreateDirectory(Path.Combine(SessionPath, "Storage"));
+                    var AvatarPath = Path.Combine(SessionPath, "Storage\\Avatar.png");
                     File.WriteAllBytes(AvatarPath, JsonConvert.DeserializeObject<byte[]>(Contents[1]));
-                    var HeaderPath = Path.Combine(Application.StartupPath, "Storage\\header.png");
+                    var HeaderPath = Path.Combine(SessionPath, "Storage\\Header.png");
                     File.WriteAllBytes(HeaderPath, JsonConvert.DeserializeObject<byte[]>(Contents[2]));
                     Window.ShowDialog(Image.FromFile(AvatarPath), Image.FromFile(HeaderPath), bool.Parse(Contents[3]), Contents[4], bool.Parse(Contents[5]), Contents[6], Contents[7], Contents[8]);
                     break;
                 case Enumerations.Action.Disconnect:
                     MessageBox.Show($"The connection was closed by the server.\n\n{Contents[1]}", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    File.WriteAllText(SessionPath + "\\.siivota", "");
                     FConnection.Dispose();
                     FClient.Dispose();
                     Application.Exit();
