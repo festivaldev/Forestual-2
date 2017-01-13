@@ -11,6 +11,7 @@ namespace Forestual2CS
         public event DSelectionChanged SelectionChanged;
 
         public string ChannelName { get; set; }
+        public string ChannelId { get; set; }
         public string ChannelCreator { get; set; }
         public string ChannelProtection { get; set; }
         public int MemberCount { get; set; }
@@ -64,7 +65,7 @@ namespace Forestual2CS
         }
 
         public void RefreshItem() {
-            lblChannelName.Text = $"#{ChannelName}";
+            lblChannelName.Text = $"{ChannelName} (#{ChannelId})";
             lblCreator.Text = $"Created by {ChannelCreator}";
             lblProtection.Text = ChannelProtection;
             lblMemberCount.Text = $"{MemberCount}/{(MemberCapacity != -1 ? MemberCapacity.ToString() : "∞")}";

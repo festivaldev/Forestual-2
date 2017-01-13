@@ -106,6 +106,12 @@
     <Compile Include="ChannelListItem.Designer.cs">
       <DependentUpon>ChannelListItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Dialogues\ChannelCreateDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\ChannelCreateDialog.Designer.cs">
+      <DependentUpon>ChannelCreateDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Dialogues\ChannelOverviewWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +123,12 @@
     </Compile>
     <Compile Include="Dialogues\ConversationWindow.Designer.cs">
       <DependentUpon>ConversationWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogues\LuvaDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Dialogues\LuvaDialog.Designer.cs">
+      <DependentUpon>LuvaDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Dialogues\ProfileWindow.cs">
       <SubType>Form</SubType>
@@ -154,6 +166,7 @@
     <Compile Include="DoubleBufferedPanel.Designer.cs">
       <DependentUpon>DoubleBufferedPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Management\Luva.cs" />
     <Compile Include="Management\ExtensionManager.cs" />
     <Compile Include="Management\ListenerManager.cs" />
     <Compile Include="Program.cs" />
@@ -165,11 +178,17 @@
     <EmbeddedResource Include="ChannelListItem.resx">
       <DependentUpon>ChannelListItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\ChannelCreateDialog.resx">
+      <DependentUpon>ChannelCreateDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\ChannelOverviewWindow.resx">
       <DependentUpon>ChannelOverviewWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\ConversationWindow.resx">
       <DependentUpon>ConversationWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Dialogues\LuvaDialog.resx">
+      <DependentUpon>LuvaDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dialogues\ProfileWindow.resx">
       <DependentUpon>ProfileWindow.cs</DependentUpon>

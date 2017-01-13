@@ -18,6 +18,8 @@ namespace Forestual2CS
         }
 
         public void Clear() {
+            webConversation.DocumentText = "";
+            webConversation.Navigate("about:blank");
             webConversation.Navigate(Path.Combine(Application.StartupPath, "style.html"));
         }
 

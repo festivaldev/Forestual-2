@@ -32,12 +32,12 @@ namespace Forestual2CS.Dialogues
         private List<Account> Accounts;
         private List<Rank> Ranks;
         private List<Channel> Channels;
-        public static List<Enumerations.Flag> Flags;
+        public static List<string> LuvaValues;
 
         private int ExtensionCount;
         private string SessionPath;
 
-        private ChannelControl Channel;
+        private ChannelControl ChannelControl;
         private string ActiveChannelControlId = "forestual";
 
         public enum AccountState
@@ -55,9 +55,8 @@ namespace Forestual2CS.Dialogues
             Listening = new Thread(Listen);
             tbxInput.KeyDown += OnTbxInputKeyDown;
             btnSend.Click += OnBtnSendClick;
-            Channel = new ChannelControl();
-            Channel.Dock = DockStyle.Fill;
-            pnlConversation.Controls.Add(Channel);
+            ChannelControl = new ChannelControl {Dock = DockStyle.Fill};
+            pnlConversation.Controls.Add(ChannelControl);
             cbxSidebar.CheckedChanged += (sender, args) => pnlAccounts.Width = (cbxSidebar.Checked ? 300 : 0);
             btnChannels.Click += OnBtnChannelsClicked;
         }
@@ -107,7 +106,7 @@ namespace Forestual2CS.Dialogues
                 FConnection.SetStreamContent(string.Join("|", accountId, Cryptography.ComputeHash(password)));
 
                 // Clear Channel Control
-                Channel.Clear();
+                ChannelControl.Clear();
 
                 // Add Handlers
 
@@ -184,10 +183,10 @@ namespace Forestual2CS.Dialogues
                     ListenerManager.InvokeSpecialEvent(JsonConvert.DeserializeObject<EventArguments>(Contents[1]));
                     break;
                 case Enumerations.Action.Plain:
-                    Invoke(new Action(() => Channel.AddMessage(JsonConvert.DeserializeObject<F2Core.Message>(Contents[1]))));
+                    Invoke(new Action(() => ChannelControl.AddMessage(JsonConvert.DeserializeObject<F2Core.Message>(Contents[1]))));
                     break;
                 case Enumerations.Action.ClearConversation:
-                    Invoke(new Action(() => Channel.Clear()));
+                    Invoke(new Action(() => ChannelControl.Clear()));
                     break;
                 case Enumerations.Action.SetRankList:
                     Ranks = JsonConvert.DeserializeObject<List<Rank>>(Contents[1]);
@@ -198,15 +197,22 @@ namespace Forestual2CS.Dialogues
                     break;
                 case Enumerations.Action.SetChannelList:
                     Channels = JsonConvert.DeserializeObject<List<Channel>>(Contents[1]);
-
+                    DisplayAccounts();
                     // Refresh Channels
                     break;
-                case Enumerations.Action.SetFlags:
-                    Flags = JsonConvert.DeserializeObject<List<Enumerations.Flag>>(Contents[1]);
+                case Enumerations.Action.SetLuvaValues:
+                    LuvaValues = JsonConvert.DeserializeObject<List<string>>(Contents[1]);
                     SetControlAccessability();
                     break;
                 case Enumerations.Action.SetChannel:
-                    // Set Channel
+                    var Channel = JsonConvert.DeserializeObject<Channel>(Contents[1]);
+
+                    Invoke(new Action(() => ChannelControl.AddMessage(new F2Core.Message {
+                        Content = $"You've entered the \"{Channel.Name}\"-channel. (#{Channel.Id})",
+                        Time = DateTime.Now.ToShortTimeString(),
+                        Type = Enumerations.MessageType.Center
+                    })));
+                     
                     break;
                 case Enumerations.Action.SetAccountData:
                     GC.Collect();
@@ -218,6 +224,14 @@ namespace Forestual2CS.Dialogues
                     var HeaderPath = Path.Combine(SessionPath, "Storage\\Header.png");
                     File.WriteAllBytes(HeaderPath, JsonConvert.DeserializeObject<byte[]>(Contents[2]));
                     Window.ShowDialog(Image.FromFile(AvatarPath), Image.FromFile(HeaderPath), bool.Parse(Contents[3]), Contents[4], bool.Parse(Contents[5]), Contents[6], Contents[7], Contents[8]);
+                    break;
+                case Enumerations.Action.ShowLuvaNotice:
+                    var Severity = JsonConvert.DeserializeObject<Severity>(Contents[2]);
+                    var LDialog = new LuvaDialog {
+                        LuvaValue = Contents[1],
+                        Severity = Severity
+                    };
+                    LDialog.ShowDialog();
                     break;
                 case Enumerations.Action.Disconnect:
                     MessageBox.Show($"The connection was closed by the server.\n\n{Contents[1]}", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -231,21 +245,23 @@ namespace Forestual2CS.Dialogues
         }
 
         private void DisplayAccounts() {
-            pnlAccounts.Controls.Clear();
-            YCoordinate = 0;
-            foreach (var Rank in Ranks) {
-                var Header = GetHeaderPanel(Rank.Name, ColorTranslator.FromHtml(Rank.Color));
-                Header.Location = new Point(0, YCoordinate);
-                YCoordinate += 20;
-                pnlAccounts.Controls.Add(Header);
-                foreach (var Account in Accounts.FindAll(a => a.RankId == Rank.Id)) {
-                    var Item = GetItemPanel(Account.Name, ColorTranslator.FromHtml(Rank.Color), Account.Online);
-                    Item.Location = new Point(0, YCoordinate);
-                    YCoordinate += 51;
-                    pnlAccounts.Controls.Add(Item);
+            try {
+                pnlAccounts.Controls.Clear();
+                YCoordinate = 0;
+                foreach (var Rank in Ranks) {
+                    var Header = GetHeaderPanel(Rank.Name, ColorTranslator.FromHtml(Rank.Color));
+                    Header.Location = new Point(0, YCoordinate);
+                    YCoordinate += 20;
+                    pnlAccounts.Controls.Add(Header);
+                    foreach (var Account in Accounts.FindAll(a => a.RankId == Rank.Id)) {
+                        var Item = GetItemPanel(Account.Name, ColorTranslator.FromHtml(Rank.Color), Account.Online);
+                        Item.Location = new Point(0, YCoordinate);
+                        YCoordinate += 51;
+                        pnlAccounts.Controls.Add(Item);
+                    }
+                    YCoordinate -= 1;
                 }
-                YCoordinate -= 1;
-            }
+            } catch { }
         }
 
         private Panel GetHeaderPanel(string header, Color background) {
@@ -297,8 +313,7 @@ namespace Forestual2CS.Dialogues
                     ForeColor = Color.DimGray,
                     Padding = new Padding(3),
                     Font = new Font("Segoe UI", 9F, FontStyle.Regular),
-                    Text = "in Forestual",
-                    //$"in {Accounts.Find(a => a.Name == accountName).Channel.Name}";
+                    Text = $"in {Channels.Find(c => c.MemberIds.Contains(Accounts.Find(a => a.Name == accountName).Id)).Name}",
                     AutoSize = true,
                     BackColor = Color.White,
                     Location = new Point(Label.Width + 21, 15),

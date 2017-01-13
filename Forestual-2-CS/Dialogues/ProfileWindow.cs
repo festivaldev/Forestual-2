@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
+using Forestual2CS.Management;
 
 namespace Forestual2CS.Dialogues
 {
@@ -22,6 +23,14 @@ namespace Forestual2CS.Dialogues
             InitializeComponent();
             pnlHeader.Paint += OnPanelHeaderPaint;
             this.Closing += OnClosing;
+
+            btnEdit.Click += OnBtnEditClicked;
+        }
+
+        private void OnBtnEditClicked(object sender, EventArgs e) {
+            if (Editable) {
+                
+            }
         }
 
         private void OnClosing(object sender, CancelEventArgs e) {
@@ -34,7 +43,7 @@ namespace Forestual2CS.Dialogues
             Header = header;
             Online = online;
             AccountName = accountName;
-            Editable = editable;
+            Editable = editable || MainWindow.LuvaValues.CheckValueSilently("forestual.canEditAccounts");
             Rank = rank;
             Money = money;
             LastSeen = lastSeen;
