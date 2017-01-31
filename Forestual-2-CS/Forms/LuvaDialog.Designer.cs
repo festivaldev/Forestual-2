@@ -1,4 +1,4 @@
-﻿namespace Forestual2CS.Dialogues
+﻿namespace Forestual2CS.Forms
 {
     partial class LuvaDialog
     {

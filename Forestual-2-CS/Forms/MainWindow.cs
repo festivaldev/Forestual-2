@@ -10,12 +10,11 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Forms;
 using F2Core;
-using F2Core.Management;
+using F2Core.Extension;
 using Forestual2CS.Management;
 using Newtonsoft.Json;
-using ContentAlignment = System.Drawing.ContentAlignment;
 
-namespace Forestual2CS.Dialogues
+namespace Forestual2CS.Forms
 {
     public partial class MainWindow : Form, IClient
     {
@@ -34,11 +33,12 @@ namespace Forestual2CS.Dialogues
         private List<Channel> Channels;
         public static List<string> LuvaValues;
 
+        public static string MyId;
+
         private int ExtensionCount;
         private string SessionPath;
 
         private ChannelControl ChannelControl;
-        private string ActiveChannelControlId = "forestual";
 
         public enum AccountState
         {
@@ -55,7 +55,7 @@ namespace Forestual2CS.Dialogues
             Listening = new Thread(Listen);
             tbxInput.KeyDown += OnTbxInputKeyDown;
             btnSend.Click += OnBtnSendClick;
-            ChannelControl = new ChannelControl {Dock = DockStyle.Fill};
+            ChannelControl = new ChannelControl { Dock = DockStyle.Fill };
             pnlConversation.Controls.Add(ChannelControl);
             cbxSidebar.CheckedChanged += (sender, args) => pnlAccounts.Width = (cbxSidebar.Checked ? 300 : 0);
             btnChannels.Click += OnBtnChannelsClicked;
@@ -70,7 +70,7 @@ namespace Forestual2CS.Dialogues
         private void OnBtnSendClick(object sender, EventArgs e) {
             var Content = tbxInput.Text;
             if (!string.IsNullOrEmpty(Content) && !string.IsNullOrWhiteSpace(Content)) {
-                FConnection.SetStreamContent(string.Join("|", Enumerations.Action.Plain.ToString(), Content));
+                FConnection.SetStreamContent(string.Join("|", Enumerations.Action.Plain, Content));
                 tbxInput.Clear();
             }
         }
@@ -83,12 +83,13 @@ namespace Forestual2CS.Dialogues
 
         private void OnClosing(object sender, CancelEventArgs e) {
             try {
+                File.WriteAllText(SessionPath + "\\session.done", "");
                 IsSupposedClosing = true;
                 Listening.Abort();
                 FConnection.Dispose();
                 FClient.Dispose();
             } catch { }
-            File.WriteAllText(SessionPath + "\\.siivota", "");
+            File.WriteAllText(SessionPath + "\\session.done", "");
             Application.Exit();
         }
 
@@ -101,8 +102,7 @@ namespace Forestual2CS.Dialogues
                 var SessionData = Cryptography.GenerateAesData();
                 FConnection.AesData = SessionData;
                 FConnection.HmacKey = Cryptography.GenerateHmacKey();
-                var SessionDataString = string.Join("|", Convert.ToBase64String(SessionData.Key), Convert.ToBase64String(SessionData.IV), Convert.ToBase64String(FConnection.HmacKey));
-                FConnection.SetRawStreamContent(Cryptography.RSAEncrypt(SessionDataString, ServiceProvider));
+                FConnection.SetRawStreamContent(Cryptography.RSAEncrypt(string.Join("|", Convert.ToBase64String(SessionData.Key),Convert.ToBase64String(SessionData.IV),Convert.ToBase64String(FConnection.HmacKey)), ServiceProvider));
                 FConnection.SetStreamContent(string.Join("|", accountId, Cryptography.ComputeHash(password)));
 
                 // Clear Channel Control
@@ -128,8 +128,10 @@ namespace Forestual2CS.Dialogues
                 try {
                     Invoke(new DParseStreamContent(ParseStreamContent), FConnection.GetStreamContent());
                 } catch {
-                    if (!IsSupposedClosing)
+                    if (!IsSupposedClosing) {
                         MessageBox.Show("Forestual 2 lost the connection to the server.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    File.WriteAllText(SessionPath + "\\session.done", "");
                     FConnection.Dispose();
                     FClient.Dispose();
                     Application.Exit();
@@ -139,30 +141,31 @@ namespace Forestual2CS.Dialogues
 
         private void ParseStreamContent(string content) {
             if (!string.IsNullOrEmpty(content) && !string.IsNullOrWhiteSpace(content)) {
-                var Contents = content.Split('|');
-                var Type = (Enumerations.Action) Enum.Parse(typeof(Enumerations.Action), Contents[0]);
+
+                var Packet = content.Split('|');
+                var Type = (Enumerations.Action) Enum.Parse(typeof(Enumerations.Action), Packet[0]);
+
                 switch (Type) {
                 case Enumerations.Action.SetState:
-                    if (Contents[1] == Enumerations.ClientState.Banned.ToString()) {
-                        var Punishment = JsonConvert.DeserializeObject<Punishment>(Contents[2]);
+                    if (Packet[1] == Enumerations.ClientState.Banned.ToString()) {
+                        var Punishment = JsonConvert.DeserializeObject<Punishment>(Packet[2]);
                         var Message = $"You're banned by {Punishment.CreatorId}. This ban lasts {(Punishment.Type == Enumerations.PunishmentType.Bann ? "permanently." : $"until\n{Punishment.EndDate.ToShortDateString()} {Punishment.EndDate.ToLongTimeString()}")}\nReason: {Punishment.Reason}";
                         MessageBox.Show(Message, "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Close();
-                    } else if (Contents[1] == Enumerations.ClientState.Muted.ToString()) {
-                        var Punishment = JsonConvert.DeserializeObject<Punishment>(Contents[2]);
+                    } else if (Packet[1] == Enumerations.ClientState.Muted.ToString()) {
+                        var Punishment = JsonConvert.DeserializeObject<Punishment>(Packet[2]);
                         var Message = $"You're muted by {Punishment.CreatorId}. This mute lasts until:\n{Punishment.EndDate.ToShortDateString()} {Punishment.EndDate.ToLongTimeString()}\nReason: {Punishment.Reason}";
                         MessageBox.Show(Message, "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                     break;
                 case Enumerations.Action.LoginResult:
-                    if (Contents[1] == "hej") {
-                        FConnection.SessionId = Contents[2];
+                    if (Packet[1] == "hej") {
+                        FConnection.SessionId = Packet[2];
+                        MyId = Packet[3];
                         Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Sessions", $"{FConnection.SessionId}.session"));
                         SessionPath = Path.Combine(Application.StartupPath, "Sessions", $"{FConnection.SessionId}.session");
-
                         File.WriteAllText(SessionPath + "\\meta.json", JsonConvert.SerializeObject(Application.OpenForms.OfType<LoginDialogue>().ToList()[0].MetaData, Formatting.Indented));
-
-                    } else if (Contents[1] == "authentificationFailed") {
+                    } else if (Packet[1] == "authentificationFailed") {
                         MessageBox.Show("Authentification failed. The given password isn't correct.\nMake sure you entered the correct password and try again.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Application.Restart();
                     } else {
@@ -172,7 +175,7 @@ namespace Forestual2CS.Dialogues
                     break;
                 case Enumerations.Action.ExtensionTransport:
                     GC.Collect();
-                    var Bytes = JsonConvert.DeserializeObject<byte[]>(Contents[1]);
+                    var Bytes = JsonConvert.DeserializeObject<byte[]>(Packet[1]);
                     if (!Directory.Exists(Path.Combine(SessionPath, "Extensions")))
                         Directory.CreateDirectory(Path.Combine(SessionPath, "Extensions"));
                     File.WriteAllBytes(Path.Combine(SessionPath, $"Extensions\\Extension{ExtensionCount}.dll"), Bytes);
@@ -180,39 +183,39 @@ namespace Forestual2CS.Dialogues
                     ExtensionCount++;
                     break;
                 case Enumerations.Action.Extension:
-                    ListenerManager.InvokeSpecialEvent(JsonConvert.DeserializeObject<EventArguments>(Contents[1]));
+                    ListenerManager.InvokeSpecialEvent(JsonConvert.DeserializeObject<EventArguments>(Packet[1]));
                     break;
                 case Enumerations.Action.Plain:
-                    Invoke(new Action(() => ChannelControl.AddMessage(JsonConvert.DeserializeObject<F2Core.Message>(Contents[1]))));
+                    Invoke(new Action(() => ChannelControl.AddMessage(JsonConvert.DeserializeObject<MessagePacket>(Packet[1]))));
                     break;
                 case Enumerations.Action.ClearConversation:
                     Invoke(new Action(() => ChannelControl.Clear()));
                     break;
                 case Enumerations.Action.SetRankList:
-                    Ranks = JsonConvert.DeserializeObject<List<Rank>>(Contents[1]);
+                    Ranks = JsonConvert.DeserializeObject<List<Rank>>(Packet[1]);
                     break;
                 case Enumerations.Action.SetAccountList:
-                    Accounts = JsonConvert.DeserializeObject<List<Account>>(Contents[1]);
+                    Accounts = JsonConvert.DeserializeObject<List<Account>>(Packet[1]);
                     DisplayAccounts();
                     break;
                 case Enumerations.Action.SetChannelList:
-                    Channels = JsonConvert.DeserializeObject<List<Channel>>(Contents[1]);
+                    Channels = JsonConvert.DeserializeObject<List<Channel>>(Packet[1]);
                     DisplayAccounts();
                     // Refresh Channels
                     break;
                 case Enumerations.Action.SetLuvaValues:
-                    LuvaValues = JsonConvert.DeserializeObject<List<string>>(Contents[1]);
+                    LuvaValues = JsonConvert.DeserializeObject<List<string>>(Packet[1]);
                     SetControlAccessability();
                     break;
                 case Enumerations.Action.SetChannel:
-                    var Channel = JsonConvert.DeserializeObject<Channel>(Contents[1]);
-
-                    Invoke(new Action(() => ChannelControl.AddMessage(new F2Core.Message {
-                        Content = $"You've entered the \"{Channel.Name}\"-channel. (#{Channel.Id})",
+                    var Channel = JsonConvert.DeserializeObject<Channel>(Packet[1]);
+                    Invoke(new Action(() => ChannelControl.Clear()));
+                    Invoke(new Action(() => ChannelControl.AddMessage(new MessagePacket {
+                        Content = $"You've entered \"{Channel.Name}\". (#{Channel.Id})",
                         Time = DateTime.Now.ToShortTimeString(),
                         Type = Enumerations.MessageType.Center
                     })));
-                     
+
                     break;
                 case Enumerations.Action.SetAccountData:
                     GC.Collect();
@@ -220,22 +223,46 @@ namespace Forestual2CS.Dialogues
                     if (!Directory.Exists(Path.Combine(SessionPath, "Storage")))
                         Directory.CreateDirectory(Path.Combine(SessionPath, "Storage"));
                     var AvatarPath = Path.Combine(SessionPath, "Storage\\Avatar.png");
-                    File.WriteAllBytes(AvatarPath, JsonConvert.DeserializeObject<byte[]>(Contents[1]));
+                    File.WriteAllBytes(AvatarPath, JsonConvert.DeserializeObject<byte[]>(Packet[1]));
                     var HeaderPath = Path.Combine(SessionPath, "Storage\\Header.png");
-                    File.WriteAllBytes(HeaderPath, JsonConvert.DeserializeObject<byte[]>(Contents[2]));
-                    Window.ShowDialog(Image.FromFile(AvatarPath), Image.FromFile(HeaderPath), bool.Parse(Contents[3]), Contents[4], bool.Parse(Contents[5]), Contents[6], Contents[7], Contents[8]);
+                    File.WriteAllBytes(HeaderPath, JsonConvert.DeserializeObject<byte[]>(Packet[2]));
+                    Window.ShowDialog(Image.FromFile(AvatarPath), Image.FromFile(HeaderPath), bool.Parse(Packet[3]), Packet[4], bool.Parse(Packet[5]), Packet[6], Packet[7], Packet[8]);
                     break;
                 case Enumerations.Action.ShowLuvaNotice:
-                    var Severity = JsonConvert.DeserializeObject<Severity>(Contents[2]);
+                    var Severity = JsonConvert.DeserializeObject<Severity>(Packet[2]);
                     var LDialog = new LuvaDialog {
-                        LuvaValue = Contents[1],
+                        LuvaValue = Packet[1],
                         Severity = Severity
                     };
                     LDialog.ShowDialog();
                     break;
+                case Enumerations.Action.ChannelJoinResult:
+
+                    switch (Packet[1]) {
+                    case "redundant":
+                        MessageBox.Show("You're already in this channel.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case "unknown":
+                        MessageBox.Show("This channel does no longer exist.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case "full":
+                        MessageBox.Show("This channel is full.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case "authFailed":
+                        MessageBox.Show("The password you've entered is incorrect.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case "authRequired":
+                        MessageBox.Show("This channel requires a password to enter.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case "ranked":
+                        MessageBox.Show("This channel is only open to members of a specific rank.", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    }
+
+                    break;
                 case Enumerations.Action.Disconnect:
-                    MessageBox.Show($"The connection was closed by the server.\n\n{Contents[1]}", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    File.WriteAllText(SessionPath + "\\.siivota", "");
+                    File.WriteAllText(SessionPath + "\\session.done", "");
+                    MessageBox.Show($"The connection was closed by the server.\n\n{Packet[1]}", "Forestual 2", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     FConnection.Dispose();
                     FClient.Dispose();
                     Application.Exit();
@@ -330,7 +357,7 @@ namespace Forestual2CS.Dialogues
 
         private void OnAccountListEntryClicked(object sender, EventArgs e) {
             var AccountName = ((Control) sender).Name.Split(':')[1];
-            SendToServer(string.Join("|", Enumerations.Action.GetAccountData, AccountName));
+            SendPacketToServer(string.Join("|", Enumerations.Action.GetAccountData, AccountName));
         }
 
         private void StatusElementPaint(object sender, PaintEventArgs e) {
@@ -355,8 +382,8 @@ namespace Forestual2CS.Dialogues
             Invoke(new Action<Form>(f => f.Show()), form);
         }
 
-        public void SendToServer(string content) {
-            FConnection.SetStreamContent(content);
+        public void SendPacketToServer(string packet) {
+            FConnection.SetStreamContent(packet);
         }
 
         public string Serialize(dynamic content, bool indented) {

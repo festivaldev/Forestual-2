@@ -1,6 +1,6 @@
-﻿namespace Forestual2CS.Dialogues
+﻿namespace Forestual2CS.Forms
 {
-    partial class ChooseConnectionDialogue
+    partial class ReconnectDialogue
     {
         /// <summary>
         /// Required designer variable.
@@ -29,12 +29,13 @@
             this.btnConnect = new System.Windows.Forms.Button();
             this.Label1 = new System.Windows.Forms.Label();
             this.lbxServers = new System.Windows.Forms.ListBox();
+            this.btnRemove = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(273, 244);
+            this.btnCancel.Location = new System.Drawing.Point(265, 241);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(90, 25);
             this.btnCancel.TabIndex = 0;
@@ -44,7 +45,7 @@
             // btnConnect
             // 
             this.btnConnect.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnConnect.Location = new System.Drawing.Point(177, 244);
+            this.btnConnect.Location = new System.Drawing.Point(169, 241);
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Size = new System.Drawing.Size(90, 25);
             this.btnConnect.TabIndex = 1;
@@ -56,7 +57,7 @@
             this.Label1.AutoSize = true;
             this.Label1.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.Label1.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.Label1.Location = new System.Drawing.Point(12, 12);
+            this.Label1.Location = new System.Drawing.Point(8, 12);
             this.Label1.Name = "Label1";
             this.Label1.Size = new System.Drawing.Size(82, 21);
             this.Label1.TabIndex = 4;
@@ -67,20 +68,30 @@
             this.lbxServers.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lbxServers.FormattingEnabled = true;
             this.lbxServers.ItemHeight = 15;
-            this.lbxServers.Location = new System.Drawing.Point(16, 46);
+            this.lbxServers.Location = new System.Drawing.Point(12, 45);
             this.lbxServers.Name = "lbxServers";
-            this.lbxServers.Size = new System.Drawing.Size(347, 184);
+            this.lbxServers.Size = new System.Drawing.Size(343, 184);
             this.lbxServers.TabIndex = 5;
             // 
-            // ChooseConnectionDialogue
+            // btnRemove
+            // 
+            this.btnRemove.Location = new System.Drawing.Point(12, 241);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(90, 25);
+            this.btnRemove.TabIndex = 6;
+            this.btnRemove.Text = "Remove";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            // 
+            // ReconnectDialogue
             // 
             this.AcceptButton = this.btnConnect;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(375, 281);
+            this.ClientSize = new System.Drawing.Size(367, 276);
             this.ControlBox = false;
+            this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.lbxServers);
             this.Controls.Add(this.Label1);
             this.Controls.Add(this.btnConnect);
@@ -89,7 +100,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "ChooseConnectionDialogue";
+            this.Name = "ReconnectDialogue";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -105,5 +116,6 @@
         private System.Windows.Forms.Button btnConnect;
         internal System.Windows.Forms.Label Label1;
         private System.Windows.Forms.ListBox lbxServers;
+        private System.Windows.Forms.Button btnRemove;
     }
 }

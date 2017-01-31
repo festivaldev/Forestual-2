@@ -6,7 +6,7 @@ using System.Drawing.Text;
 using System.Windows.Forms;
 using Forestual2CS.Management;
 
-namespace Forestual2CS.Dialogues
+namespace Forestual2CS.Forms
 {
     public partial class ProfileWindow : Form
     {
