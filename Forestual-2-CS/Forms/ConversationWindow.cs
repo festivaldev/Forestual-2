@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
 
-namespace Forestual2CS.Dialogues
+namespace Forestual2CS.Forms
 {
     public partial class ConversationWindow : Form
     {

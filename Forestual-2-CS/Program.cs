@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using Forestual2CS.Dialogues;
+using Forestual2CS.Forms;
 
 namespace Forestual2CS
 {

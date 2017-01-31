@@ -1,4 +1,4 @@
-﻿namespace Forestual2CS.Dialogues
+﻿namespace Forestual2CS.Forms
 {
     partial class LoginDialogue
     {
@@ -189,6 +189,7 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
+            this.lblTitle.BackColor = System.Drawing.Color.White;
             this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lblTitle.ForeColor = System.Drawing.SystemColors.HotTrack;
             this.lblTitle.Location = new System.Drawing.Point(16, 26);

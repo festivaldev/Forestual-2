@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using F2Core;
 
 namespace Forestual2CS.Management
 {
@@ -18,7 +19,7 @@ namespace Forestual2CS.Management
         }
 
         public static void Report(string value) {
-            F2Core.Management.ExtensionPool.Client.SendToServer(string.Join("|", F2Core.Enumerations.Action.SendLuvaNotice, value));
+            F2Core.Extension.ExtensionPool.Client.SendPacketToServer(string.Join("|", Enumerations.Action.SendLuvaNotice, value));
         }
     }
 }

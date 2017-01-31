@@ -106,58 +106,58 @@
     <Compile Include="ChannelListItem.Designer.cs">
       <DependentUpon>ChannelListItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\ChannelCreateDialog.cs">
+    <Compile Include="Forms\ChannelCreateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\ChannelCreateDialog.Designer.cs">
+    <Compile Include="Forms\ChannelCreateDialog.Designer.cs">
       <DependentUpon>ChannelCreateDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\ChannelOverviewWindow.cs">
+    <Compile Include="Forms\ChannelOverviewWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\ChannelOverviewWindow.Designer.cs">
+    <Compile Include="Forms\ChannelOverviewWindow.Designer.cs">
       <DependentUpon>ChannelOverviewWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\ConversationWindow.cs">
+    <Compile Include="Forms\ConversationWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\ConversationWindow.Designer.cs">
+    <Compile Include="Forms\ConversationWindow.Designer.cs">
       <DependentUpon>ConversationWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\LuvaDialog.cs">
+    <Compile Include="Forms\LuvaDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\LuvaDialog.Designer.cs">
+    <Compile Include="Forms\LuvaDialog.Designer.cs">
       <DependentUpon>LuvaDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\ProfileWindow.cs">
+    <Compile Include="Forms\ProfileWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\ProfileWindow.Designer.cs">
+    <Compile Include="Forms\ProfileWindow.Designer.cs">
       <DependentUpon>ProfileWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\ReconnectDialogue.cs">
+    <Compile Include="Forms\ReconnectDialogue.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\ReconnectDialogue.Designer.cs">
+    <Compile Include="Forms\ReconnectDialogue.Designer.cs">
       <DependentUpon>ReconnectDialogue.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\LoginDialogue.cs">
+    <Compile Include="Forms\LoginDialogue.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\LoginDialogue.Designer.cs">
+    <Compile Include="Forms\LoginDialogue.Designer.cs">
       <DependentUpon>LoginDialogue.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\MainWindow.cs">
+    <Compile Include="Forms\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\MainWindow.Designer.cs">
+    <Compile Include="Forms\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Dialogues\VersionConflictDialogue.cs">
+    <Compile Include="Forms\VersionConflictDialogue.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Dialogues\VersionConflictDialogue.Designer.cs">
+    <Compile Include="Forms\VersionConflictDialogue.Designer.cs">
       <DependentUpon>VersionConflictDialogue.cs</DependentUpon>
     </Compile>
     <Compile Include="DoubleBufferedPanel.cs">
@@ -178,31 +178,31 @@
     <EmbeddedResource Include="ChannelListItem.resx">
       <DependentUpon>ChannelListItem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\ChannelCreateDialog.resx">
+    <EmbeddedResource Include="Forms\ChannelCreateDialog.resx">
       <DependentUpon>ChannelCreateDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\ChannelOverviewWindow.resx">
+    <EmbeddedResource Include="Forms\ChannelOverviewWindow.resx">
       <DependentUpon>ChannelOverviewWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\ConversationWindow.resx">
+    <EmbeddedResource Include="Forms\ConversationWindow.resx">
       <DependentUpon>ConversationWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\LuvaDialog.resx">
+    <EmbeddedResource Include="Forms\LuvaDialog.resx">
       <DependentUpon>LuvaDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\ProfileWindow.resx">
+    <EmbeddedResource Include="Forms\ProfileWindow.resx">
       <DependentUpon>ProfileWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\ReconnectDialogue.resx">
+    <EmbeddedResource Include="Forms\ReconnectDialogue.resx">
       <DependentUpon>ReconnectDialogue.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\LoginDialogue.resx">
+    <EmbeddedResource Include="Forms\LoginDialogue.resx">
       <DependentUpon>LoginDialogue.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\MainWindow.resx">
+    <EmbeddedResource Include="Forms\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Dialogues\VersionConflictDialogue.resx">
+    <EmbeddedResource Include="Forms\VersionConflictDialogue.resx">
       <DependentUpon>VersionConflictDialogue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

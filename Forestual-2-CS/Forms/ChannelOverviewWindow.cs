@@ -4,14 +4,16 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using F2Core;
-using F2Core.Management;
+using F2Core.Extension;
 using Forestual2CS.Management;
 using Newtonsoft.Json;
 
-namespace Forestual2CS.Dialogues
+namespace Forestual2CS.Forms
 {
     public partial class ChannelOverviewWindow : Form
     {
+        private ChannelListItem SelectedItem;
+
         public ChannelOverviewWindow() {
             InitializeComponent();
 
@@ -23,6 +25,10 @@ namespace Forestual2CS.Dialogues
         }
 
         private void OnBtnJoinClick(object sender, EventArgs e) {
+            if (SelectedItem != null) {
+                ExtensionPool.Client.SendPacketToServer(string.Join("|", Enumerations.Action.TryChannelJoin, SelectedItem.ChannelId, ""));
+                Close();
+            }
         }
 
         private void OnBtnHypermoveClick(object sender, EventArgs e) {
@@ -32,8 +38,8 @@ namespace Forestual2CS.Dialogues
         }
 
         private void OnBtnCloseClick(object sender, EventArgs e) {
-            if (MainWindow.LuvaValues.CheckValue("forestual.canCloseChannels")) {
-
+            if (SelectedItem != null && (MainWindow.LuvaValues.CheckValue("forestual.canCloseChannels") || SelectedItem.ChannelCreator == MainWindow.MyId)) {
+                ExtensionPool.Client.SendPacketToServer(string.Join("|", Enumerations.Action.CloseChannel, SelectedItem.ChannelId));
             }
         }
 
@@ -48,7 +54,7 @@ namespace Forestual2CS.Dialogues
                 var Dialog = new ChannelCreateDialog();
                 if (Dialog.ShowDialog() == DialogResult.OK) {
                     var Channel = Dialog.GetChannel();
-                    ExtensionPool.Client.SendToServer(string.Join("|", Enumerations.Action.CreateChannel, JsonConvert.SerializeObject(Channel)));
+                    ExtensionPool.Client.SendPacketToServer(string.Join("|", Enumerations.Action.CreateChannel, JsonConvert.SerializeObject(Channel)));
                     Close();
                 }
             }
@@ -82,9 +88,12 @@ namespace Forestual2CS.Dialogues
         }
 
         private void OnItemSelectionChanged(ChannelListItem sender, bool selected) {
-            var SelectedItem = pnlItemContainer.Controls.OfType<ChannelListItem>().ToList().Find(i => i.Mode == ChannelListItem.SelectionMode.Selected && i.ChannelName != sender.ChannelName);
+            SelectedItem = pnlItemContainer.Controls.OfType<ChannelListItem>().ToList().Find(i => i.Mode == ChannelListItem.SelectionMode.Selected && i.ChannelName != sender.ChannelName);
             if (SelectedItem != null) {
                 SelectedItem.Mode = ChannelListItem.SelectionMode.None;
+            }
+            if (selected) {
+                SelectedItem = sender;
             }
         }
     }

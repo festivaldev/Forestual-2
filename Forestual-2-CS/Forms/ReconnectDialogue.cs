@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Forestual2CS.Dialogues
+namespace Forestual2CS.Forms
 {
     public partial class ReconnectDialogue : Form
     {

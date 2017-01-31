@@ -11,7 +11,7 @@ using F2Core;
 using F2Core.Compatibility;
 using Newtonsoft.Json;
 
-namespace Forestual2CS.Dialogues
+namespace Forestual2CS.Forms
 {
     public partial class LoginDialogue : Form
     {
@@ -39,9 +39,8 @@ namespace Forestual2CS.Dialogues
             if (Directory.Exists(SessionsPath)) {
                 var SessionFolders = Directory.GetDirectories(SessionsPath);
                 if (SessionFolders.Length > 0) {
-                    for (var i = 0; i < SessionFolders.Length; i++) {
-                        var FolderPath = SessionFolders[i];
-                        if (File.Exists(FolderPath + "\\.siivota")) {
+                    foreach (var FolderPath in SessionFolders) {
+                        if (File.Exists(FolderPath + "\\session.done")) {
                             Directory.Delete(FolderPath, true);
                         }
                     }
@@ -89,7 +88,7 @@ namespace Forestual2CS.Dialogues
                         ServiceProvider.FromXmlString(PublicKey);
                         PreServiceProvider.FromXmlString(PrivateKey);
                         var DConnection = new DiscardableConnection(FClient.GetStream());
-                        DConnection.SetRawStreamContent(Cryptography.RSAEncrypt(Enumerations.Action.GetServerMetaData.ToString(), ServiceProvider));
+                        DConnection.SetRawStreamContent(Cryptography.RSAEncrypt(string.Join("|", Enumerations.Action.GetServerMetaData,""), ServiceProvider));
                         MetaData = JsonConvert.DeserializeObject<ServerMetaData>(Cryptography.RSADecrypt(DConnection.GetRawStreamContent(), PreServiceProvider));
                         btnRegister.Enabled = MetaData.AcceptsRegistration;
                         try {

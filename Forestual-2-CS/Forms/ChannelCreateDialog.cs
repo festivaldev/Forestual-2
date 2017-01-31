@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using F2Core;
 
-namespace Forestual2CS.Dialogues
+namespace Forestual2CS.Forms
 {
     public partial class ChannelCreateDialog : Form
     {
